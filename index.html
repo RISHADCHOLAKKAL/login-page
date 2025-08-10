@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LensFlare | Portfolio Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --primary-dark: #5649c0;
+            --white: #ffffff;
+            --light-bg: #f9f9f9;
+            --light-gray: #e0e0e0;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bg-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .login-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-box {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .login-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .logo::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            margin: 15px auto;
+            border-radius: 3px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--light-bg);
+            border: 1px solid var(--light-gray);
+            border-radius: 50px;
+            color: var(--text-dark);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .input-group label {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .input-group input:focus + label,
+        .input-group input:valid + label {
+            transform: translateY(-25px) translateX(-10px);
+            font-size: 0.8rem;
+            background: var(--primary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--white);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--primary);
+        }
+        
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .social-login {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .social-login p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .social-login p::before,
+        .social-login p::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--light-gray);
+        }
+        
+        .social-login p::before {
+            left: 0;
+        }
+        
+        .social-login p::after {
+            right: 0;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+        
+        .camera-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+        }
+        
+        .camera-1 {
+            top: 20%;
+            left: 10%;
+        }
+        
+        .camera-2 {
+            bottom: 15%;
+            right: 10%;
+        }
+        
+        .camera-3 {
+            top: 30%;
+            right: 15%;
+        }
+        
+        .camera-4 {
+            bottom: 25%;
+            left: 20%;
+        }
+        
+        .floating-objects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(108, 92, 231, 0.05);
+            animation: float-circle 20s infinite linear;
+        }
+        
+        @keyframes float-circle {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .error-message {
+            color: #ff5252;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 15px;
+            height: 20px;
+        }
+        
+        .success-message {
+            color: #4caf50;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 15px;
+            height: 20px;
+        }
+        
+        /* Shutter animation for successful login */
+        @keyframes shutter {
+            0% {
+                height: 0;
+                opacity: 0;
+            }
+            50% {
+                height: 50vh;
+                opacity: 1;
+            }
+            100% {
+                height: 100vh;
+                opacity: 1;
+            }
+        }
+        
+        .shutter-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background-color: var(--primary);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            animation: shutter 1.5s forwards;
+        }
+        
+        .shutter-content {
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Demo credentials box */
+        .demo-credentials {
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px dashed var(--primary);
+        }
+        
+        .demo-credentials h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .demo-credentials p {
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 500px) {
+            .login-box {
+                width: 90%;
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles" id="particles"></div>
+    
+    <div class="floating-objects">
+        <div class="floating-circle" style="width: 300px; height: 300px; top: -150px; left: -150px;"></div>
+        <div class="floating-circle" style="width: 200px; height: 200px; bottom: -100px; right: -100px;"></div>
+    </div>
+    
+    <div class="camera-icon camera-1">📷</div>
+    <div class="camera-icon camera-2">📸</div>
+    <div class="camera-icon camera-3">🎥</div>
+    <div class="camera-icon camera-4">📹</div>
+    
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h1>RCgraphy</h1>
+                <p>Capture the extraordinary</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="username" required>
+                    <label for="username">Username</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" required>
+                    <label for="password">Password</label>
+                </div>
+                
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                </div>
+                
+                <button type="submit" class="login-btn">Login</button>
+                
+                <div class="error-message" id="errorMessage"></div>
+                <div class="success-message" id="successMessage"></div>
+                
+                <!-- Demo credentials box 
+                <div class="demo-credentials">
+                    <h4>Demo Credentials</h4>
+                    <p>Username: <strong>photographer</strong><br>
+                    Password: <strong>capture123</strong></p>
+                </div>-->
+            </form>
+            
+            <div class="social-login">
+                <p>or login with</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">f</a>
+                    <a href="#" class="social-icon">G</a>
+                    <a href="#" class="social-icon">in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2025 RC Photography. All rights reserved.
+    </div>
+    
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 20;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random size between 5px and 15px
+            const size = Math.random() * 100 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // Random animation duration
+            particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            
+            // Random delay
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Built-in credentials
+        const validCredentials = {
+            username: "LEICA",
+            password: "capture123"
+        };
+        
+        // Login form handling
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+            
+            if (username === validCredentials.username && password === validCredentials.password) {
+                successMessage.textContent = 'Login successful! Redirecting...';
+                
+                // Create shutter effect
+                const shutter = document.createElement('div');
+                shutter.className = 'shutter-effect';
+                shutter.innerHTML = `
+                    <div class="shutter-content">
+                        <h2>Welcome to RCPhotography</h2>
+                        <p>Your photographic journey awaits</p>
+                    </div>
+                `;
+                document.body.appendChild(shutter);
+                
+                // Redirect to portfolio after animation
+                setTimeout(() => {
+                    window.location.href = "index.html"; // Change to your actual portfolio page
+                }, 2500);
+            } else {
+                errorMessage.textContent = 'Invalid username or password';
+                
+                // Shake animation for error
+                loginForm.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    loginForm.style.animation = '';
+                }, 500);
+            }
+        });
+        
+        // Add shake animation dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Input focus effects
+        const inputs = document.querySelectorAll('.input-group input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('label').style.color = 'var(--primary)';
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.querySelector('label').style.color = 'var(--text-light)';
+                }
+            });
+        });
+        
+        // Auto-fill demo credentials for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            // Uncomment these lines if you want the demo credentials to auto-fill
+             document.getElementById('username').value = validCredentials.username;
+             document.getElementById('password').value = validCredentials.password;
+        });
+    </script>
+</body>
+</html>
